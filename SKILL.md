@@ -121,10 +121,24 @@ After running the script:
 
 ## Limitations to flag honestly
 
-- **Alpha compositing is not part of APCA spec.** The script pre-composites foreground over background in sRGB (the pragmatic default most tools use), but the official APCA position is "alpha is unsupported." When alpha is involved, the output includes a warning — surface it in your report.
-- **fontLookupAPCA Ascend variant only.** The Bronze conformance has multiple sub-modes (Ascend for body text, others for headlines/UI). Ascend is the most commonly applied; if the user needs the wider table, mention it as a follow-up.
-- **Rounding:** lookup keys round abs(Lc) down to the nearest 5. So Lc 73 and Lc 70 hit the same row. Mention this when results are very close to a boundary.
-- **No CSS variable resolution.** If a token's value is `var(--other)`, the user must resolve it first. The Tailwind extractor only catches direct color values (`oklch(...)`, `#...`, etc.), not chained references.
+These caveats matter — don't let the user walk away thinking an APCA-pass is the same as "fully accessible / legally safe / works for everyone."
+
+### What APCA itself cannot tell you (mention these proactively)
+
+- **APCA does NOT replace WCAG 2.x for legal compliance.** ADA, EN 301 549, KWCAG, Section 508 — every legal regime still mandates WCAG 2.x AA. APCA is a WCAG 3 *draft*, not law. **If the user mentions "audit," "compliance," "WCAG," "ADA," "법적," "공공기관," "장애인차별금지법," or anything similar, explicitly tell them this skill does NOT cover legal compliance** and recommend they run a WCAG 2.x ratio checker alongside (browser DevTools accessibility panel, axe DevTools, WAVE).
+- **Single perceptual model.** APCA assumes one "average user." Color blindness, low vision, age-related changes aren't differentiated. For projects with known low-vision audiences, recommend additional vision-simulation tools.
+- **Contrast ≠ readability.** Lc is necessary but not sufficient. Cramped line-height, tight tracking, and bad fonts can make Lc-90 text hard to read. If the user is reviewing real UI screens, mention typography is also a factor.
+- **Lc 0–30 zone is noisy.** When findings land in this range, say "this fails" — don't quote the exact Lc as if it were precise to one decimal.
+- **Font family and rendering are ignored.** The minimum px values from `fontMatrixAscend` are a starting point, not the final word. Pretendard 14px ≠ Times New Roman 14px in actual readability.
+- **Algorithm frozen since Feb 2021.** New display tech (HDR, OLED light bleed, P3) isn't reflected. If the user's audience is on modern devices, mention real on-screen contrast may differ slightly from APCA's prediction.
+
+### This implementation's specific limits
+
+- **Alpha compositing is not part of the APCA spec.** The script pre-composites in sRGB (pragmatic default) and adds a warning. For arbitrary content behind translucent overlays (hero images with text), the approximation can be wrong by 5–10 Lc.
+- **`fontLookupAPCA` Ascend variant only.** Body text. Other variants (headlines, non-text UI) aren't bundled.
+- **Rounding:** lookup keys round abs(Lc) down to the nearest 5. Lc 73 and Lc 70 hit the same row. Surface this when results are right on a boundary.
+- **No CSS variable resolution.** If a token's value is `var(--other)`, the user must resolve it or run the extractor against built CSS, not source.
+- **Wide-gamut inputs clamp to sRGB.** `color(display-p3 ...)` is approximated, not true P3-display contrast.
 
 ## Common findings to watch for
 

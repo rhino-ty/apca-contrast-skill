@@ -129,13 +129,37 @@ python3 scripts/apca.py --reverse "#1a1a1a" 90
 
 Useful when you know what Lc you need (e.g. "Lc 75 for body text 16px @ 400") and need a starting shade to plug into your token system.
 
-## Limitations (read this before reporting bugs)
+## Limitations
 
-- **Alpha compositing is not part of the APCA spec.** The script pre-composites foreground over background in sRGB (the pragmatic approach most tools take), but the official APCA position is "alpha is unsupported." When alpha is involved, the output includes a `⚠ Alpha compositing applied (unofficial)` warning.
-- **Only the `Ascend` variant of fontLookupAPCA is bundled.** Bronze conformance has multiple sub-tables for different roles (body, headlines, UI). Ascend is the most commonly applied for body text. If you need other variants, open an issue.
-- **Lc lookup rounds down to the nearest 5.** So Lc 73 and Lc 70 hit the same row in the table. Mention this when results are very close to a boundary.
-- **Tailwind extractor catches direct values only.** `--var(--other)` chained references are not resolved. Inline the actual color first.
-- **No CSS-in-JS / `@theme inline` token rewriting.** The extractor reads raw `:root` / `.dark` blocks; if your tokens are exposed via Tailwind v4's `@theme` directive elsewhere, point at the resolved CSS file (e.g. `globals.css` after Tailwind processing).
+Two kinds of limits — what **APCA itself** cannot tell you (true of every APCA tool, including the upstream library), and what **this specific implementation** doesn't yet handle. Knowing the difference matters: don't blame the script for things the algorithm can't do.
+
+### APCA itself — what no APCA tool can tell you
+
+- **WCAG 3 draft, not adopted.** APCA is the proposed contrast model for WCAG 3, which has been in draft since 2021 with no fixed adoption date. **Legal compliance regimes (ADA, EN 301 549, KWCAG, Section 508) all still mandate WCAG 2.x AA.** Passing APCA does *not* protect you from a WCAG 2.x-based complaint. For production audits you need both: APCA for design quality, WCAG 2.x ratio for legal cover. This skill does NOT compute WCAG 2.x ratio — pair it with a WCAG 2.x checker for compliance work.
+- **Algorithm frozen since Feb 2021.** Constants are at `0.0.98G-4g`. Stability is good for reproducibility, but it also means HDR, OLED sub-pixel light bleed, and new display tech aren't reflected.
+- **Single perceptual model.** APCA assumes one "average user, average sRGB display, average office lighting." Color blindness, low vision, age-related vision changes, and viewing in bright sun or dim rooms aren't differentiated. Real accessibility audits need additional vision-condition checks (e.g. deuteranopia/protanopia simulation).
+- **Lc 0–30 is the noisy zone.** Below Lc ~30, the underlying perceptual model loses fidelity. Findings in that range are directionally right ("this is bad") but the exact number isn't precise.
+- **Font family and rendering are ignored.** Pretendard at 14px and Times New Roman at 14px are *not* equally readable, but APCA treats them identically. Same for macOS subpixel rendering vs Windows ClearType vs mobile Roboto. The size thresholds in `fontMatrixAscend` are a good *starting point*, not the full story.
+- **Variable-font weights aren't first-class.** APCA only knows the 100/200/.../900 grid. A weight of 450 (legitimate in variable fonts) gets snapped — conservative, but imprecise.
+- **sRGB only.** APCA-P3 is on the upstream roadmap but unreleased. If your real users are on P3-native displays (most modern phones, MacBooks since 2016), the actual on-screen contrast may differ slightly from what APCA predicts.
+- **Contrast is necessary, not sufficient.** Readability depends on contrast *plus* typography (line-height, tracking, x-height) *plus* layout. Lc 90 in a cramped 1.0 line-height paragraph is still hard to read. APCA can't tell you that.
+- **Ecosystem maturity.** Figma, Adobe XD, browser DevTools, and most accessibility test suites still use WCAG 2.x ratio by default. If you adopt APCA internally, expect onboarding cost — "Lc 75" isn't intuitive the way "4.5:1" pretends to be.
+
+### This implementation — additional caveats
+
+- **Alpha compositing is not part of the APCA spec.** The script pre-composites foreground over background in sRGB (the pragmatic approach most tools take), but the official APCA position is "alpha is unsupported." When alpha is involved, the output includes a `⚠ Alpha compositing applied (unofficial)` warning. For surfaces with arbitrary content behind a translucent layer (image hero with text overlay, etc.), this approximation can be wrong by 5–10 Lc.
+- **Only the `Ascend` variant of `fontLookupAPCA` is bundled.** Bronze conformance has multiple sub-tables for different roles (body, headlines, non-text UI). Ascend covers ~95% of body-text audit questions. If you need other variants, open an issue.
+- **Lc lookup rounds down to the nearest 5.** Lc 73 and Lc 70 hit the same row. When findings are right on a boundary, the verdict is conservative — call this out in reports.
+- **Tailwind extractor catches direct values only.** `var(--other)` chained references are not resolved. Inline the actual color first, or run the extractor against your *built* CSS (post-Tailwind), not the source.
+- **No CSS-in-JS / `@theme inline` token rewriting.** Reads raw `:root` / `.dark` blocks. Point it at the file Tailwind ultimately emits to the browser.
+- **Wide-gamut inputs clamp to sRGB.** `color(display-p3 1 0 0)` becomes `#ff0000` after clamp, which loses the actual P3 saturation. Output Lc reflects what an sRGB display would show, not what a P3 display would show. APCA-P3 (when it ships) will fix this; until then, treat P3 inputs as a sRGB approximation.
+
+## When NOT to rely on this skill alone
+
+- **Legal accessibility audits (ADA, KWCAG, EN 301 549, Section 508).** Run a WCAG 2.x ratio checker alongside. APCA pass + WCAG 2.x AA pass is the safe combination.
+- **Audits for users with specific vision conditions.** APCA averages. For projects with known low-vision audiences (e.g. medical software, elder care), use vision-simulation tools in addition.
+- **Hi-fi typography evaluation.** APCA is one of three legs (contrast + typography + layout). Use this skill for the contrast leg, not as the whole audit.
+- **HDR / wide-gamut design pipelines.** Until APCA-P3 ships, this skill gives you a sRGB-equivalent answer, not a true wide-gamut answer.
 
 ## Algorithm provenance
 
