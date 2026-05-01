@@ -40,6 +40,15 @@ python3 ~/.claude/skills/apca-contrast/scripts/apca.py "#000" "#fff"
 # Verdict: Pass — body minimum ≥14.5px @ 400wt
 ```
 
+Or run the bundled shadcn/ui Neutral-theme example to see what a full audit looks like:
+
+```bash
+python3 ~/.claude/skills/apca-contrast/scripts/apca.py \
+  --from-tailwind ~/.claude/skills/apca-contrast/examples/sample-globals.css
+```
+
+The corresponding worked-out report — including the dark-mode `destructive` failure that ships in the shadcn default — is in [`examples/sample-audit-report.md`](examples/sample-audit-report.md).
+
 ## Usage from Claude Code
 
 Just ask in natural language. Example triggers:
@@ -130,13 +139,40 @@ Useful when you know what Lc you need (e.g. "Lc 75 for body text 16px @ 400") an
 
 ## Algorithm provenance
 
-The APCA core (`apca_lc`) and `fontMatrixAscend` table are both ported verbatim from [`Myndex/apca-w3@0.1.9`](https://github.com/Myndex/apca-w3) (the canonical W3-licensed implementation). Constants are frozen at `0.0.98G-4g` per the upstream maintainer's stability commitment. Any future changes to the upstream algorithm will be tracked here.
+The APCA core (`apca_lc`) and `fontMatrixAscend` table are both ported verbatim from [`Myndex/apca-w3@0.1.9`](https://github.com/Myndex/apca-w3) (the canonical W3-licensed implementation). Constants are frozen at `0.0.98G-4g` per the upstream maintainer's stability commitment.
 
-If you're using APCA in a production accessibility audit pipeline, also read:
+If you want to know exactly *why* APCA exists and how it differs from WCAG 2.x ratio, the bundled deep-dives go further than most public docs:
+
+- [`references/APCA-ALGORITHM.md`](references/APCA-ALGORITHM.md) — the math, every constant explained, common reimplementation bugs, and what APCA does *not* do.
+- [`references/FONT-LOOKUP-TABLE.md`](references/FONT-LOOKUP-TABLE.md) — how to read `fontMatrixAscend`, why the cells aren't monotonic, sentinel values (999/777/0), and lookup edge cases.
+
+Upstream / external references:
 
 - [APCA documentation hub](https://git.apcacontrast.com/)
 - [The original SAPC-APCA repo](https://github.com/Myndex/SAPC-APCA)
 - [The Bronze Simple conformance table](http://apcaw3.myndex.com/)
+
+## Repository layout
+
+```
+apca-contrast-skill/
+├── SKILL.md             # Claude Code skill manifest (frontmatter + body)
+├── scripts/
+│   ├── apca.py          # Main CLI entry point (parsers, APCA core, modes)
+│   └── _tables.py       # fontMatrixAscend, named colors, gamut matrices
+├── examples/
+│   ├── sample-globals.css       # shadcn/ui Neutral default theme
+│   ├── sample-batch.json        # mixed-format batch input
+│   └── sample-audit-report.md   # worked-out audit with real findings
+├── references/
+│   ├── APCA-ALGORITHM.md        # algorithm deep-dive
+│   └── FONT-LOOKUP-TABLE.md     # lookup table semantics
+├── CHANGELOG.md         # versioned change history
+├── LICENSE              # MIT
+└── NOTICE               # third-party attribution
+```
+
+Version history is in [CHANGELOG.md](CHANGELOG.md).
 
 ## Why this exists
 

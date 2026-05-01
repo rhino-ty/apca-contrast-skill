@@ -1,0 +1,42 @@
+[
+  {
+    "name": "body text on white",
+    "fg": "#171717",
+    "bg": "#ffffff"
+  },
+  {
+    "name": "muted body 14px caption",
+    "fg": "#737373",
+    "bg": "#ffffff"
+  },
+  {
+    "name": "primary button label",
+    "fg": "#fafafa",
+    "bg": "oklch(0.205 0 0)"
+  },
+  {
+    "name": "destructive label (light)",
+    "fg": "oklch(0.577 0.245 27.325)",
+    "bg": "#ffffff"
+  },
+  {
+    "name": "destructive label (dark) — fails APCA",
+    "fg": "oklch(0.396 0.141 25.723)",
+    "bg": "oklch(0.145 0 0)"
+  },
+  {
+    "name": "border on white",
+    "fg": "#e5e5e5",
+    "bg": "#ffffff"
+  },
+  {
+    "name": "translucent overlay text (alpha)",
+    "fg": "rgba(0, 0, 0, 0.7)",
+    "bg": "#fafafa"
+  },
+  {
+    "name": "P3-source brand red",
+    "fg": "color(display-p3 0.95 0.2 0.25)",
+    "bg": "white"
+  }
+]
