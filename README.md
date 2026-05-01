@@ -23,11 +23,8 @@ WCAG 2.x's contrast ratio is mathematically broken for modern displays — it ov
 
 ## Install
 
-Clone into your Claude Code user-level skills directory:
-
 ```bash
-git clone https://github.com/rhino-ty/apca-contrast-skill.git \
-  ~/.claude/skills/apca-contrast
+npx skills add rhino-ty/apca-contrast-skill
 ```
 
 That's it. The skill auto-loads on the next Claude Code session and triggers when you ask about contrast, Lc, accessibility, design tokens, etc.
