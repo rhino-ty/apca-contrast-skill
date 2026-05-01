@@ -144,9 +144,7 @@ This skill makes option 4 — "use the deterministic, official-table-backed impl
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
-
-The `fontMatrixAscend` table and APCA constants are derived from `Myndex/apca-w3`, which is also licensed under MIT (with the additional W3 license terms governing use in W3 standards work). This repo does not redistribute the upstream library; the table is reproduced for use within this skill only.
+MIT — see [LICENSE](LICENSE). Third-party attribution for the APCA constants and `fontMatrixAscend` table (derived from `Myndex/apca-w3`) is recorded in [NOTICE](NOTICE).
 
 ## Contributing
 

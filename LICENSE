@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-The fontMatrixAscend table and APCA algorithm constants in scripts/_tables.py
-and scripts/apca.py are derived from Myndex/apca-w3 (https://github.com/Myndex/apca-w3),
-which is also licensed under the MIT License. The upstream library is the canonical
-W3-licensed implementation by Andrew Somers.

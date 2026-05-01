@@ -1,0 +1,19 @@
+apca-contrast-skill
+Copyright (c) 2026 rhino-ty
+
+This product includes the APCA algorithm constants and the fontMatrixAscend
+lookup table from:
+
+    Myndex/apca-w3 (https://github.com/Myndex/apca-w3)
+    Copyright (c) Andrew Somers
+    Licensed under the MIT License
+
+The upstream library is the canonical W3-licensed reference implementation of
+APCA-W3 v0.1.9, with algorithm constants frozen at 0.0.98G-4g (Feb 2021).
+
+This repository does not redistribute the upstream library; the constants and
+the fontMatrixAscend table are reproduced verbatim in scripts/_tables.py and
+scripts/apca.py for use within this skill only.
+
+Additional W3 license terms apply when using APCA in W3 standards work — see
+the upstream repository for details.
