@@ -2,6 +2,12 @@
 
 > Claude Code skill: APCA-W3 v0.1.9 perceptual contrast measurement with the official `fontLookupAPCA` pass/fail table — design system audits for Tailwind v4 / shadcn oklch tokens, light/dark mode side-by-side, every CSS color notation.
 
+[![Made with](https://img.shields.io/badge/Made%20with-Claude%20Skills-blueviolet)](https://docs.claude.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![APCA-W3](https://img.shields.io/badge/APCA--W3-v0.1.9-green)](https://github.com/Myndex/apca-w3)
+
+---
+
 Stop regenerating contrast math at runtime. This skill bundles a deterministic Python script (stdlib only) that gives Claude Code a reliable way to:
 
 - Measure APCA Lc for any text/background pair in **8 color notations**
