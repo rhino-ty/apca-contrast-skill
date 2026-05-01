@@ -157,6 +157,10 @@ Issues and PRs welcome. Areas of interest:
 
 ## Related skills
 
-- [polymedia-review-skill](https://github.com/rhino-ty/polymedia-review-skill) — Socratic-maieutic review notes
-- [k-law-assistant](https://github.com/rhino-ty/k-law-assistant) — Korean law lookup
-- [web-project-plan](https://github.com/rhino-ty/web-project-plan) — structured new-project interview
+- [polymedia-review-skill](https://github.com/rhino-ty/polymedia-review-skill) — Socratic-maieutic review notes for books / games / movies / music (Obsidian)
+- [review-myblog-converter](https://github.com/rhino-ty/review-myblog-converter) — convert Obsidian review notes into Naver Blog / Tistory / Velog tone (companion to polymedia-review-skill)
+- [game-architect](https://github.com/rhino-ty/game-architect) — end-to-end indie game design (mechanics, balancing, GDD, narrative, marketing)
+- [k-law-assistant](https://github.com/rhino-ty/k-law-assistant) — real-time Korean law lookup via Beopmang API
+- [web-project-plan](https://github.com/rhino-ty/web-project-plan) — structured interview to scaffold new app projects
+
+See [cc-system](https://github.com/rhino-ty/cc-system) for the full collection of my Claude Code agents and skills.
